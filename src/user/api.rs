@@ -22,7 +22,7 @@ impl Api {
         let Token(token) = data.0;
         assert_eq!(token, "token123");
 
-        let m_guard = CACHE.lock().await;
+        let m_guard = CACHE.read().await;
         let rt = m_guard.get(&"token".to_string()).unwrap();
         info!("refresh_token is {}", rt);
 

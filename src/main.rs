@@ -5,7 +5,7 @@ use poem_openapi::OpenApiService;
 
 mod user;
 use time::{format_description, macros::offset};
-use tokio::sync::Mutex;
+use tokio::sync::RwLock;
 use tracing::{debug, Level};
 use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::{
@@ -20,7 +20,7 @@ const FORMAT_STR: &str = "[year]-[month]-[day] [hour]:[minute]:[second]";
 extern crate lazy_static;
 
 lazy_static! {
-    static ref CACHE: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
+    static ref CACHE: RwLock<HashMap<String, String>> = RwLock::new(HashMap::new());
 }
 
 #[tokio::main]
@@ -85,7 +85,7 @@ async fn refresh_token() {
 
         interval = 5;
         CACHE
-            .lock()
+            .write()
             .await
             .insert("token".to_string(), format!("token{}", count));
     }
