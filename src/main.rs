@@ -83,7 +83,7 @@ async fn refresh_token() {
         tokio::time::sleep(tokio::time::Duration::from_secs(interval)).await;
         debug!("refresh_token... ");
 
-        interval = 5;
+        interval = 60;
         CACHE
             .write()
             .await
